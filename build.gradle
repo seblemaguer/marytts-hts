@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+    id 'groovy'
+    // id 'maven-publish'
+    // id 'nu.studer.plugindev' version '1.0.3'
+}
+
+
+// group 'de.dfki.mary'
+// version '0.5.3-SNAPSHOT'
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url 'https://oss.jfrog.org/artifactory/repo'
+    }
+}
+
+def maryttsVersion = '5.1.2'
+
+dependencies {
+    compile localGroovy()
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+    compile files('../marytts-lang-en-hts/build/libs/marytts-lang-en-hts.jar') // FIXME: not appropriate
+    compile group: 'de.dfki.mary', name: 'marytts-runtime', version: maryttsVersion
+    ['en'].each { locale ->
+        runtime group: 'de.dfki.mary', name: "marytts-lang-$locale", version: maryttsVersion
+    }
+    testCompile group: 'de.dfki.mary', name: 'marytts-runtime', version: maryttsVersion
+    ['en'].each { locale ->
+        testCompile group: 'de.dfki.mary', name: "marytts-lang-$locale", version: maryttsVersion
+    }
+}
+
+/***************************************************************************************************
+ ***
+ ***************************************************************************************************/
+
+
+
+// plugindev {
+// //    pluginImplementationClass 'de.dfki.mary.voicebuilding.VoicebuildingPlugin'
+//     pluginDescription 'A replacement for the legacy VoiceImportTools in MaryTTS'
+//     pluginLicense 'GPL-3.0'
+//     pluginTags 'gradle', 'plugin', 'marytts', 'voicebuilding'
+//     authorId 'ingmar'
+//     authorName 'Ingmar Steiner'
+//     authorEmail 'steiner@coli.uni-saarland.de'
+//     projectUrl 'https://github.com/marytts/gradle-marytts-voicebuilding-plugin'
+//     projectInceptionYear '2013'
+//     done()
+// }
