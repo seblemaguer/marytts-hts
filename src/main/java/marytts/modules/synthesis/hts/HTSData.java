@@ -42,7 +42,6 @@ import org.apache.log4j.Logger;
  */
 public class HTSData
 {
-
 	private Logger logger = MaryUtils.getLogger("HTSData");
     private int rate = 48000; /*< HTS Default sample rate */
     
@@ -73,7 +72,7 @@ public class HTSData
         // Get the config filename 
         PropertiesAccessor p = MaryConfig.getVoiceConfig(voiceName).getPropertiesAccessor(true);
         
-		logger.debug("Initialisation of a new HTSData set");
+		logger.debug("Initialisation of a new HTSData set for voice " + voiceName);
 		String prefix = "voice." + voiceName;
 		rate = p.getInteger(prefix + ".samplingRate", rate);
 
@@ -93,11 +92,9 @@ public class HTSData
             
         /* Load gv if necessary */
         use_gv = p.getBoolean(prefix + ".usegv"); /* Use Global Variance in parameter generation */
-		// if (use_gv) {
-        //     gv_tree_file = loadFile(p, prefix, "gv_tree");
-        //     gv_model_file = loadFile(p, prefix, "gv_mmf");
-        //     gv_list_file = loadFile(p, prefix, "gv_list");
-		// }
+		if (use_gv) {
+            // gv_directory = HTSUtils.loadDirectory(voiceName, p.getProperty(prefix + ".gv_dir"), "gv");
+		}
 
         /* Load HTS configuration */
         hts_configuration_file = HTSUtils.loadFile(p, prefix, "configuration");

@@ -133,6 +133,8 @@ public class HTSSynthesis extends InternalModule {
         if (ais != null) {
             // Conversion to targetFormat required?
             if (!ais.getFormat().matches(targetFormat)) {
+                if (true)
+                    throw new Exception();
                 // Attempt conversion; if not supported, log a warning
                 // and provide the non-converted stream.
                 logger.info("Audio format conversion required for voice " + currentVoice.getName());
