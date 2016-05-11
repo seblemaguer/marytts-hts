@@ -1,5 +1,5 @@
 /**
- * Copyright 2000-2006 DFKI GmbH.
+ * Copyright 2000-2016 DFKI GmbH.
  * All Rights Reserved.  Use is subject to license terms.
  *
  * This file is part of MARY TTS.
@@ -51,7 +51,7 @@ import org.w3c.dom.traversal.NodeIterator;
 /**
  * The synthesis module.
  *
- * @author Marc Schr&ouml;der
+ * @author <a href="mailto:slemaguer@coli.uni-saarland.de">Sébastien Le Maguer</a>
  */
 
 public class HTSSynthesis extends InternalModule {
@@ -81,7 +81,7 @@ public class HTSSynthesis extends InternalModule {
 
 	/**
 	 * Perform a power-on self test by processing some example input data.
-	 * 
+	 *
 	 * @throws Error
 	 *             if the module does not work properly.
 	 */
@@ -100,7 +100,7 @@ public class HTSSynthesis extends InternalModule {
 
 		AudioFormat targetFormat = d.getAudioFileFormat().getFormat();
 		HTSVoice defaultVoice = (HTSVoice) d.getDefaultVoice();
-        
+
 		Locale locale = d.getLocale();
 		String outputParams = d.getOutputParams();
 
@@ -113,7 +113,7 @@ public class HTSSynthesis extends InternalModule {
 		}
 
 		MaryData result = new MaryData(outputType(), d.getLocale());
-        
+
 		// Also remember XML document in "AUDIO" output data, to keep track of phone durations:
 		result.setDocument(doc);
 		result.setAudioFileFormat(d.getAudioFileFormat());
@@ -126,10 +126,10 @@ public class HTSSynthesis extends InternalModule {
 
 		HTSVoice currentVoice = defaultVoice;
 
-        
+
 		AudioInputStream ais = null;
 		ais = currentVoice.synthesize(d, outputParams);
-        
+
         if (ais != null) {
             // Conversion to targetFormat required?
             if (!ais.getFormat().matches(targetFormat)) {
@@ -162,10 +162,10 @@ public class HTSSynthesis extends InternalModule {
                                                                 + " to requested audio format " + targetFormat + " not supported.\n" + iae.getMessage());
                 }
             }
-            
+
             result.appendAudio(ais);
         }
-        
+
 		return result;
 	}
 }
