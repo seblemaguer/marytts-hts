@@ -1,5 +1,5 @@
 /**
- * Copyright 2000-2006 DFKI GmbH.
+ * Copyright 2000-2016 DFKI GmbH.
  * All Rights Reserved.  Use is subject to license terms.
  *
  * This file is part of MARY TTS.
@@ -43,9 +43,10 @@ import marytts.exceptions.SynthesisException;
 import org.apache.log4j.Logger;
 
 /**
- * A helper class for the synthesis module; each Voice object represents one available voice database.
- * 
- * @author S&eacute;bastien Le Maguer
+ * A helper class for the synthesis module; each Voice object represents one available voice
+ * database.
+ *
+ * @author <a href="mailto:slemaguer@coli.uni-saarland.de">Sébastien Le Maguer</a>
  */
 
 public class HTSVoice extends Voice {
@@ -53,7 +54,7 @@ public class HTSVoice extends Voice {
     protected HTSWaveformSynthesizer synthesizer;
 	private Logger logger = MaryUtils.getLogger("HTSVoice");
     protected HTSData data;
-    
+
 	public HTSVoice(String name, HTSWaveformSynthesizer synth)
         throws Exception
     {
@@ -65,7 +66,7 @@ public class HTSVoice extends Voice {
 
 	/**
 	 * Synthesize a list of tokens and boundaries with the waveform synthesizer providing this voice.
-	 * 
+	 *
 	 * @param outputParams
 	 */
 	public AudioInputStream synthesize(MaryData d, String outputParams) throws SynthesisException {
@@ -80,17 +81,17 @@ public class HTSVoice extends Voice {
     {
         return data.hts_configuration_file;
     }
-    
+
     public File getCMPModel()
     {
         return data.cmp_model_file;
     }
-    
+
     public File getDurationFile()
     {
         return data.dur_model_file;
     }
-    
+
     public Path getTreeDirectory()
     {
         return data.tree_directory;
@@ -100,12 +101,12 @@ public class HTSVoice extends Voice {
     {
         return data.win_directory;
     }
-    
+
     public File getList()
     {
         return data.full_list_file;
     }
-    
+
     public int getGenerationType()
     {
         return 0; // FIXME: add a choose technique in the configuration file

@@ -1,3 +1,22 @@
+/**
+ * Copyright 2000-2016 DFKI GmbH.
+ * All Rights Reserved.  Use is subject to license terms.
+ *
+ * This file is part of MARY TTS.
+ *
+ * MARY TTS is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, version 3 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 package marytts.modules.synthesis.hts;
 
 import java.nio.file.Path;
@@ -33,8 +52,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.apache.log4j.Logger;
+
 /**
- * 
+ *
  *
  * @author <a href="mailto:slemaguer@coli.uni-saarland.de">Sébastien Le Maguer</a>
  */
@@ -62,7 +82,7 @@ public class HTSUtils
         /* Add the data from the resource */
         OutputStream os = new FileOutputStream(tmp);
         InputStream is = p.getStream(prefix + "." + key);
-        
+
         byte[] buffer = new byte[2048];
         int nbytes;
         while ((nbytes = is.read(buffer, 0, 2048)) > 0)
@@ -72,7 +92,7 @@ public class HTSUtils
         os.close();
 
         /* Return a path to the temp file */
-        return tmp;       
+        return tmp;
     }
 
     public static Path loadDirectory(String voiceName, String path, String prefix)
@@ -87,18 +107,18 @@ public class HTSUtils
             final JarFile jar = new JarFile(jarFile);
             Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
             while(entries.hasMoreElements()) {
-                
+
                 java.util.jar.JarEntry file = (java.util.jar.JarEntry) entries.nextElement();
                 /* FIXME: For the future  ?
-                if (file.isDirectory()) { // if its a directory, create it
-                    f.mkdir();
-                    continue;
-                }
+                   if (file.isDirectory()) { // if its a directory, create it
+                   f.mkdir();
+                   continue;
+                   }
                 */
-                
+
                 String name = file.getName();//filter according to the path
                 if ((name.startsWith(in_path)) && (!name.endsWith("/")))
-                { 
+                {
                     OutputStream fos = new FileOutputStream(directory.toString() + "/" + (new File(name)).getName());
                     java.io.InputStream is = jar.getInputStream(file); // get the input stream
                     while (is.available() > 0) {  // write contents of 'is' to 'fos'
@@ -111,7 +131,7 @@ public class HTSUtils
             }
             jar.close();
         }
-        
+
         return directory;
-    }    
+    }
 }
