@@ -23,18 +23,21 @@ def maryttsVersion = '5.2-SNAPSHOT'
 
 dependencies {
     compile localGroovy()
-    testCompile group: 'junit', name: 'junit', version: '4.+'
-    compile files('../marytts-lang-en-hts/build/libs/marytts-lang-en-hts.jar') // FIXME: not appropriate
+    testCompile group: 'org.testng', name: 'testng', version: '6.8.13'
     compile group: 'de.dfki.mary', name: 'marytts-runtime', version: maryttsVersion
-    ['en'].each { locale ->
-        runtime group: 'de.dfki.mary', name: "marytts-lang-$locale", version: maryttsVersion
-    }
+    // ['en', 'de'].each { locale ->
+    //     runtime group: 'de.dfki.mary', name: "marytts-lang-$locale", version: maryttsVersion
+    // }
     testCompile group: 'de.dfki.mary', name: 'marytts-runtime', version: maryttsVersion
-    ['en'].each { locale ->
+    ['en', 'de'].each { locale ->
         testCompile group: 'de.dfki.mary', name: "marytts-lang-$locale", version: maryttsVersion
     }
 }
 
+test {
+
+    useTestNG()
+}
 def cur_version = '0.1-alpha'
 
 publishing {
