@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package marytts.modules.synthesis.hts;
+package marytts.hts.synthesis;
 
 import java.nio.file.Path;
 import java.nio.file.Files;

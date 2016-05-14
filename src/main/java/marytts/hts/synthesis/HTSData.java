@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package marytts.modules.synthesis.hts;
+package marytts.hts.synthesis;
 
 
 import java.nio.file.Path;
@@ -54,6 +54,7 @@ import marytts.util.MaryUtils;
 import marytts.util.io.PropertiesAccessor;
 
 import org.apache.log4j.Logger;
+
 /**
  *
  *
