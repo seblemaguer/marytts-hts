@@ -32,6 +32,7 @@ dependencies {
     ['en', 'de'].each { locale ->
         testCompile group: 'de.dfki.mary', name: "marytts-lang-$locale", version: maryttsVersion
     }
+    testCompile group: 'de.dfki.mary', name: 'voice-cmu-slt-hsmm', version: maryttsVersion
 }
 
 test {

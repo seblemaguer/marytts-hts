@@ -1,4 +1,4 @@
-package marytts.hts.labels;
+package marytts.hts.labels.festival;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Locale;
+import java.util.Properties;
 
 /* testng part */
 import org.testng.Assert;
@@ -20,7 +21,7 @@ import marytts.datatypes.MaryDataType;
 import marytts.modules.MaryModule;
 import marytts.util.MaryUtils;
 import marytts.hts.synthesis.HTSUtils;
-import marytts.hts.labels.HTSLabelGenerator;
+import marytts.hts.labels.festival.HTSFestivalLabelGenerator;
 
 /* MaryData needed packages */
 import org.w3c.dom.Document;
@@ -32,16 +33,21 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
 
-public class HTSLabelGeneratorTest
+public class HTSFestivalLabelGeneratorTest
 {
     static final String text = "that's where you're going";
     MaryInterface mary;
 
     @BeforeSuite
 	public void setupClass() throws Exception {
+        // log4j.logger.marytts = DEBUG, stderr
+        Properties props = System.getProperties();
+        props.setProperty("voice.cmu-slt-hsmm.preferredModules",
+                          "marytts.hts.labels.festival.HTSFestivalLabelGenerator");
         mary = new LocalMaryInterface();
-        Locale loc = Locale.GERMAN;
+        Locale loc = Locale.US;
         mary.setLocale(loc);
+
         mary.setOutputType("HTSLABEL");
 		Assert.assertEquals(loc, mary.getLocale());
         Assert.assertEquals("HTSLABEL", mary.getOutputType());
