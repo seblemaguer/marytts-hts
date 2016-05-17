@@ -134,6 +134,7 @@ public class LevelsToLabels
         {
             final_label = final_label.replaceAll(key, modifier.get(key));
         }
+
         return final_label;
     }
 

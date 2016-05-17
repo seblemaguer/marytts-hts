@@ -107,6 +107,7 @@ public class HTSLabelGenerator implements MaryModule
     {
         return null;
     }
+
     public int getState()
     {
         return state;

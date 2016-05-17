@@ -40,10 +40,7 @@ public class HTSLabelGeneratorTest
     @BeforeSuite
 	public void setupClass() throws Exception {
         mary = new LocalMaryInterface();
-        Locale loc = Locale.GERMAN;
-        mary.setLocale(loc);
         mary.setOutputType("HTSLABEL");
-		Assert.assertEquals(loc, mary.getLocale());
         Assert.assertEquals("HTSLABEL", mary.getOutputType());
     }
 
@@ -60,11 +57,31 @@ public class HTSLabelGeneratorTest
 	}
 
 	@Test
-	public void convertTextToPhonemes() throws Exception {
+	public void convertTextToPhonemesDE() throws Exception {
+
+        Locale loc = Locale.GERMAN;
+        mary.setLocale(loc);
+		Assert.assertEquals(loc, mary.getLocale());
+
 		mary.setOutputType(HTSUtils.HTSLABEL.name());
-        String text = loadResourceIntoString("utt1.txt");
+        String text = loadResourceIntoString("utt1_de.txt");
         String generated_labels = mary.generateText(text);
-        String original_labels = loadResourceIntoString("utt1.lab");
+        String original_labels = loadResourceIntoString("utt1_de.lab");
+
+        Assert.assertEquals(generated_labels, original_labels);
+    }
+
+	@Test
+	public void convertTextToPhonemesFR() throws Exception {
+
+        Locale loc = Locale.FRENCH;
+        mary.setLocale(loc);
+		Assert.assertEquals(loc, mary.getLocale());
+
+		mary.setOutputType(HTSUtils.HTSLABEL.name());
+        String text = loadResourceIntoString("utt1_fr.txt");
+        String generated_labels = mary.generateText(text);
+        String original_labels = loadResourceIntoString("utt1_fr.lab");
 
         Assert.assertEquals(generated_labels, original_labels);
     }

@@ -25,11 +25,9 @@ dependencies {
     compile localGroovy()
     testCompile group: 'org.testng', name: 'testng', version: '6.8.13'
     compile group: 'de.dfki.mary', name: 'marytts-runtime', version: maryttsVersion
-    // ['en', 'de'].each { locale ->
-    //     runtime group: 'de.dfki.mary', name: "marytts-lang-$locale", version: maryttsVersion
-    // }
     testCompile group: 'de.dfki.mary', name: 'marytts-runtime', version: maryttsVersion
-    ['en', 'de'].each { locale ->
+
+    ['en', 'de', 'fr'].each { locale ->
         testCompile group: 'de.dfki.mary', name: "marytts-lang-$locale", version: maryttsVersion
     }
     testCompile group: 'de.dfki.mary', name: 'voice-cmu-slt-hsmm', version: maryttsVersion
@@ -39,6 +37,7 @@ test {
 
     useTestNG()
 }
+
 def cur_version = '0.1-alpha'
 
 publishing {
