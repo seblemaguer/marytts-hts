@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
- * TODO : Add missing features
+ * Transform levels to HTS compatible labels
+ *
+ * For now, the output alphabet is a modified arpabet one (including modifiers).
  *
  * @author <a href="mailto:slemaguer@coli.uni-saarland.de">Sébastien Le Maguer</a>
  */
-
 public class LevelsToLabels
 {
     private ArrayList<ArrayList<String>> matrice;

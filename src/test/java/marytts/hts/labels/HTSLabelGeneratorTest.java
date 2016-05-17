@@ -32,6 +32,12 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
 
+
+/**
+ * Test class for the main hts label generation module
+ *
+ * @author <a href="mailto:slemaguer@coli.uni-saarland.de">Sébastien Le Maguer</a>
+ */
 public class HTSLabelGeneratorTest
 {
     static final String text = "that's where you're going";

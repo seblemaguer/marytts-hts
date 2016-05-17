@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
- * TODO : Add missing features
+ * Transform levels to HTS compatible labels using the festival format. Therefore, only english is
+ * supported for this generator.
  *
  * @author <a href="mailto:slemaguer@coli.uni-saarland.de">Sébastien Le Maguer</a>
  */

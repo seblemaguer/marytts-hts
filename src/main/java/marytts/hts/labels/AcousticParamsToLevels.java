@@ -15,6 +15,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
+/**
+ * Generate levels from the acoustparams output (xml => object oriented format)
+ *
+ * @author <a href="mailto:slemaguer@coli.uni-saarland.de">Sébastien Le Maguer</a>
+ */
 public class AcousticParamsToLevels
 {
 

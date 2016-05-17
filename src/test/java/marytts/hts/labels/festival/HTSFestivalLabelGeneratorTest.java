@@ -32,10 +32,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
-
+/**
+ * Test class for the festival hts label generation module
+ *
+ * @author <a href="mailto:slemaguer@coli.uni-saarland.de">Sébastien Le Maguer</a>
+ */
 public class HTSFestivalLabelGeneratorTest
 {
-    static final String text = "that's where you're going";
     MaryInterface mary;
 
     @BeforeSuite

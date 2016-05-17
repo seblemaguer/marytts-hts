@@ -36,7 +36,7 @@ import javax.xml.transform.dom.DOMSource;
 import marytts.hts.synthesis.HTSUtils;
 
 /**
- *
+ * HTS Label compatible generator following the festival standard (so useable by the hts-demo)
  *
  * @author <a href="mailto:slemaguer@coli.uni-saarland.de">Sébastien Le Maguer</a>
  */
