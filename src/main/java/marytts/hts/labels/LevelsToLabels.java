@@ -37,6 +37,7 @@ public class LevelsToLabels
     private int cur_phr_size_in_wrds;
 
     private Hashtable<String, String> sampa2arpabet;
+    private Hashtable<String, String> modifier;
     private Hashtable<String, String> pos_converter;
 
     /* ==========================================================================================
@@ -46,6 +47,7 @@ public class LevelsToLabels
     {
         initPhConverter();
         initPOSConverter();
+        initModifier();
         this.levels = levels;
     }
 
@@ -105,6 +107,13 @@ public class LevelsToLabels
         sampa2arpabet.put("4", "dx"); // FIXME: ?
     }
 
+    private void initModifier()
+    {
+        modifier = new Hashtable<String, String>();
+        modifier.put(":", "LONG");
+        modifier.put("~", "NASAL");
+    }
+
     private void initPOSConverter()
     {
         pos_converter = new Hashtable<String, String>();
@@ -116,10 +125,16 @@ public class LevelsToLabels
     // FIXME: sampa to arpabet
     protected String convertLabel(String label)
     {
+        String final_label = label;
         if (sampa2arpabet.containsKey(label))
-            return sampa2arpabet.get(label);
+            final_label = sampa2arpabet.get(label);
 
-        return label;
+        // Dealing with nasalisation
+        for (String key: modifier.keySet())
+        {
+            final_label = final_label.replaceAll(key, modifier.get(key));
+        }
+        return final_label;
     }
 
     protected String convertPOS(String pos_label)
