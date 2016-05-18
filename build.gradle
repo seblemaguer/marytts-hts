@@ -38,7 +38,7 @@ test {
     useTestNG()
 }
 
-def cur_version = '0.1-alpha'
+def cur_version = '0.2-alpha'
 
 publishing {
     publications {
@@ -50,8 +50,9 @@ publishing {
         }
     }
 }
+
 bintray {
-    key = System.getenv('BINTRAY_USER')
+    user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
     pkg {
         repo = 'maven'
