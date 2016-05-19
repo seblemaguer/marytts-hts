@@ -10,6 +10,7 @@ import marytts.datatypes.MaryDataType;
 import marytts.modules.MaryModule;
 import marytts.util.MaryUtils;
 import marytts.hts.labels.AcousticParamsToLevels;
+import marytts.hts.labels.LevelsToLabels;
 
 /* Logger needed packages */
 import org.apache.log4j.Level;
@@ -181,7 +182,7 @@ public class HTSFestivalLabelGenerator implements MaryModule
         Hashtable<String, ArrayList<Hashtable<String, String>>> levels = transform.getLevels();
 
         /* Generate labels */
-        LevelsToLabels lvl = new LevelsToLabels(levels);
+        LevelsToLabels lvl = new FestivalLevelsToLabels(levels);
         String tree = lvl.toString();
         MaryData targetFeatures = new MaryData(getOutputType(), d.getLocale());
         targetFeatures.setPlainText(tree);

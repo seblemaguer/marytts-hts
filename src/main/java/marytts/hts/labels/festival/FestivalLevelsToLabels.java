@@ -2,6 +2,7 @@ package marytts.hts.labels.festival;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import marytts.hts.labels.LevelsToLabels;
 
 /**
  * Transform levels to HTS compatible labels using the festival format. Therefore, only english is
@@ -10,200 +11,166 @@ import java.util.Hashtable;
  * @author <a href="mailto:slemaguer@coli.uni-saarland.de">Sébastien Le Maguer</a>
  */
 
-public class LevelsToLabels
+public class FestivalLevelsToLabels extends LevelsToLabels
 {
-    private ArrayList<ArrayList<String>> matrice;
-    private ArrayList<Boolean> nss_mask;
-    private ArrayList<Integer> stressed_syl_indexes;
-    private Hashtable<String, ArrayList<Hashtable<String, String>>> levels;
-
-    private static final String UNDEF = "x";
-
-    private String cur_syl_vowel;
-    private int cur_pho_index;
-    private int cur_syl_index;
-    private int cur_wrd_index;
-    private int cur_phr_index;
-
-    private int pho_offset;
-    private int syl_wrd_offset;
-    private int syl_phr_offset;
-    private int wrd_offset;
-    private int phr_offset;
-    private int stress_prev;
-    private int stress_next;
-    private int cur_syl_size;
-    private int cur_wrd_size;
-    private int cur_phr_size_in_syls;
-    private int cur_phr_size_in_wrds;
-
-    private Hashtable<String, String> sampa2arpabet;
-    private Hashtable<String, String> pos2festival;
 
     /* ==========================================================================================
      * # Constructors
      * ========================================================================================== */
-    public LevelsToLabels(Hashtable<String, ArrayList<Hashtable<String, String>>> levels)
+    public FestivalLevelsToLabels(Hashtable<String, ArrayList<Hashtable<String, String>>> levels)
     {
-        initPhConverter();
-        initPOSConverter();
-        this.levels = levels;
+        super(levels);
     }
 
     /* ==========================================================================================
      * # Conversion helpers
      * ========================================================================================== */
-    private void initPhConverter()
+    protected void initPhConverter()
     {
-        sampa2arpabet = new Hashtable<String, String>();
+        alphabet_converter = new Hashtable<String, String>();
 
         // Vowels
-        sampa2arpabet.put("A", "aa");
-        sampa2arpabet.put("AI", "ay");
-        sampa2arpabet.put("E", "eh");
-        sampa2arpabet.put("EI", "ey");
-        sampa2arpabet.put("I", "ih");
-        sampa2arpabet.put("O", "ao");
-        sampa2arpabet.put("OI", "oy");
-        sampa2arpabet.put("U", "uh");
-        sampa2arpabet.put("aU", "aw");
-        sampa2arpabet.put("i", "iy");
-        sampa2arpabet.put("u", "uw");
-        sampa2arpabet.put("@", "ax");
-        sampa2arpabet.put("@U", "ow");
-        sampa2arpabet.put("V", "ah");
-        sampa2arpabet.put("{", "ae");
+        alphabet_converter.put("A", "aa");
+        alphabet_converter.put("AI", "ay");
+        alphabet_converter.put("E", "eh");
+        alphabet_converter.put("EI", "ey");
+        alphabet_converter.put("I", "ih");
+        alphabet_converter.put("O", "ao");
+        alphabet_converter.put("OI", "oy");
+        alphabet_converter.put("U", "uh");
+        alphabet_converter.put("aU", "aw");
+        alphabet_converter.put("i", "iy");
+        alphabet_converter.put("u", "uw");
+        alphabet_converter.put("@", "ax");
+        alphabet_converter.put("@U", "ow");
+        alphabet_converter.put("V", "ah");
+        alphabet_converter.put("{", "ae");
 
-        sampa2arpabet.put("j", "y");
+        alphabet_converter.put("j", "y");
 
-        sampa2arpabet.put("D", "dh");
-        sampa2arpabet.put("N", "ng");
-        sampa2arpabet.put("S", "sh");
-        sampa2arpabet.put("T", "th");
-        sampa2arpabet.put("Z", "zh");
-        sampa2arpabet.put("b", "b");
-        sampa2arpabet.put("d", "d");
-        sampa2arpabet.put("dZ", "jh"); // FIXME: what it is ?
-        sampa2arpabet.put("f", "f");
-        sampa2arpabet.put("g", "g");
-        sampa2arpabet.put("h", "hh");
-        sampa2arpabet.put("k", "k");
-        sampa2arpabet.put("l", "l");
-        sampa2arpabet.put("m", "m");
-        sampa2arpabet.put("n", "n");
-        sampa2arpabet.put("p", "p");
-        sampa2arpabet.put("r", "r");
-        sampa2arpabet.put("r=", "r"); // FIXME: sure ?
-        sampa2arpabet.put("s", "s");
-        sampa2arpabet.put("t", "t");
-        sampa2arpabet.put("tS", "ch");
-        sampa2arpabet.put("v", "v");
-        sampa2arpabet.put("w", "w");
-        sampa2arpabet.put("z", "z");
+        alphabet_converter.put("D", "dh");
+        alphabet_converter.put("N", "ng");
+        alphabet_converter.put("S", "sh");
+        alphabet_converter.put("T", "th");
+        alphabet_converter.put("Z", "zh");
+        alphabet_converter.put("b", "b");
+        alphabet_converter.put("d", "d");
+        alphabet_converter.put("dZ", "jh"); // FIXME: what it is ?
+        alphabet_converter.put("f", "f");
+        alphabet_converter.put("g", "g");
+        alphabet_converter.put("h", "hh");
+        alphabet_converter.put("k", "k");
+        alphabet_converter.put("l", "l");
+        alphabet_converter.put("m", "m");
+        alphabet_converter.put("n", "n");
+        alphabet_converter.put("p", "p");
+        alphabet_converter.put("r", "r");
+        alphabet_converter.put("r=", "r"); // FIXME: sure ?
+        alphabet_converter.put("s", "s");
+        alphabet_converter.put("t", "t");
+        alphabet_converter.put("tS", "ch");
+        alphabet_converter.put("v", "v");
+        alphabet_converter.put("w", "w");
+        alphabet_converter.put("z", "z");
 
-        sampa2arpabet.put("_", "pau");
+        alphabet_converter.put("_", "pau");
 
-        sampa2arpabet.put("4", "dx"); // FIXME: ?
+        alphabet_converter.put("4", "dx"); // FIXME: ?
     }
-
-    // FIXME: sampa to arpabet
-    protected String convertLabel(String label)
+    protected void initPOSConverter()
     {
-        return sampa2arpabet.get(label);
-    }
+        pos_converter = new Hashtable<String, String>();
 
-    private void initPOSConverter()
-    {
-        pos2festival = new Hashtable<String, String>();
         // aux
-        pos2festival.put("is", "aux");
-        pos2festival.put("am", "aux");
-        pos2festival.put("are", "aux");
-        pos2festival.put("was", "aux");
-        pos2festival.put("were", "aux");
-        pos2festival.put("has", "aux");
-        pos2festival.put("have", "aux");
-        pos2festival.put("had", "aux");
-        pos2festival.put("be", "aux");
+        pos_converter.put("is", "aux");
+        pos_converter.put("am", "aux");
+        pos_converter.put("are", "aux");
+        pos_converter.put("was", "aux");
+        pos_converter.put("were", "aux");
+        pos_converter.put("has", "aux");
+        pos_converter.put("have", "aux");
+        pos_converter.put("had", "aux");
+        pos_converter.put("be", "aux");
 
         // cc
-        pos2festival.put("and", "cc");
-        pos2festival.put("but", "cc");
-        pos2festival.put("or", "cc");
-        pos2festival.put("plus", "cc");
-        pos2festival.put("yet", "cc");
-        pos2festival.put("nor", "cc");
+        pos_converter.put("and", "cc");
+        pos_converter.put("but", "cc");
+        pos_converter.put("or", "cc");
+        pos_converter.put("plus", "cc");
+        pos_converter.put("yet", "cc");
+        pos_converter.put("nor", "cc");
 
         // det
-        pos2festival.put("the", "det");
-        pos2festival.put("a", "det");
-        pos2festival.put("an", "det");
-        pos2festival.put("no", "det");
-        pos2festival.put("some", "det");
-        pos2festival.put("this", "det");
-        pos2festival.put("that", "det");
-        pos2festival.put("each", "det");
-        pos2festival.put("another", "det");
-        pos2festival.put("those", "det");
-        pos2festival.put("every", "det");
-        pos2festival.put("all", "det");
-        pos2festival.put("any", "det");
-        pos2festival.put("these", "det");
-        pos2festival.put("both", "det");
-        pos2festival.put("neither", "det");
-        pos2festival.put("no", "det");
-        pos2festival.put("many", "det");
+        pos_converter.put("the", "det");
+        pos_converter.put("a", "det");
+        pos_converter.put("an", "det");
+        pos_converter.put("no", "det");
+        pos_converter.put("some", "det");
+        pos_converter.put("this", "det");
+        pos_converter.put("that", "det");
+        pos_converter.put("each", "det");
+        pos_converter.put("another", "det");
+        pos_converter.put("those", "det");
+        pos_converter.put("every", "det");
+        pos_converter.put("all", "det");
+        pos_converter.put("any", "det");
+        pos_converter.put("these", "det");
+        pos_converter.put("both", "det");
+        pos_converter.put("neither", "det");
+        pos_converter.put("no", "det");
+        pos_converter.put("many", "det");
 
         // in
-        pos2festival.put("in", "in");
+        pos_converter.put("in", "in");
 
         // md
-        pos2festival.put("will", "md");
-        pos2festival.put("may", "md");
-        pos2festival.put("would", "md");
-        pos2festival.put("can", "md");
-        pos2festival.put("could", "md");
-        pos2festival.put("must", "md");
-        pos2festival.put("ought", "md");
-        pos2festival.put("might", "md");
+        pos_converter.put("will", "md");
+        pos_converter.put("may", "md");
+        pos_converter.put("would", "md");
+        pos_converter.put("can", "md");
+        pos_converter.put("could", "md");
+        pos_converter.put("must", "md");
+        pos_converter.put("ought", "md");
+        pos_converter.put("might", "md");
 
         // pps
-        pos2festival.put("her", "pps");
-        pos2festival.put("his", "pps");
-        pos2festival.put("their", "pps");
-        pos2festival.put("its", "pps");
-        pos2festival.put("our", "pps");
-        pos2festival.put("their", "pps");
-        pos2festival.put("mine", "pps");
+        pos_converter.put("her", "pps");
+        pos_converter.put("his", "pps");
+        pos_converter.put("their", "pps");
+        pos_converter.put("its", "pps");
+        pos_converter.put("our", "pps");
+        pos_converter.put("their", "pps");
+        pos_converter.put("mine", "pps");
 
         // to
-        pos2festival.put("to", "to");
+        pos_converter.put("to", "to");
 
         // wp
-        pos2festival.put("who", "wp");
-        pos2festival.put("what", "wp");
-        pos2festival.put("where", "wp");
-        pos2festival.put("when", "wp");
-        pos2festival.put("how", "wp");
+        pos_converter.put("who", "wp");
+        pos_converter.put("what", "wp");
+        pos_converter.put("where", "wp");
+        pos_converter.put("when", "wp");
+        pos_converter.put("how", "wp");
 
         // punc
-        pos2festival.put(".", "punc");
-        pos2festival.put(",", "punc");
-        pos2festival.put(":", "punc");
-        pos2festival.put(";", "punc");
-        pos2festival.put("\"", "punc");
-        pos2festival.put("'", "punc");
-        pos2festival.put("(", "punc");
-        pos2festival.put("?", "punc");
-        pos2festival.put(")", "punc");
-        pos2festival.put("!", "punc");
+        pos_converter.put(".", "punc");
+        pos_converter.put(",", "punc");
+        pos_converter.put(":", "punc");
+        pos_converter.put(";", "punc");
+        pos_converter.put("\"", "punc");
+        pos_converter.put("'", "punc");
+        pos_converter.put("(", "punc");
+        pos_converter.put("?", "punc");
+        pos_converter.put(")", "punc");
+        pos_converter.put("!", "punc");
 
         // content => default do nothing
     }
 
     protected String convertPOS(Hashtable<String, String> cur_wrd)
     {
-        String fest_pos = pos2festival.get(cur_wrd.get("label"));
+        String fest_pos = pos_converter.get(cur_wrd.get("label"));
+
         if (fest_pos != null)
             return fest_pos;
 
@@ -212,7 +179,7 @@ public class LevelsToLabels
 
     protected String convertPOS(String pos)
     {
-        String fest_pos =pos2festival.get(pos);
+        String fest_pos = pos_converter.get(pos);
         if (fest_pos != null)
             return fest_pos;
 
@@ -470,7 +437,7 @@ public class LevelsToLabels
         matrice.get(seg_idx).add(levels.get("utt").get(0).get("nb_phrases"));
     }
 
-    private boolean isNSS(int index)
+    protected boolean isNSS(int index)
     {
         if (levels.get("phoneme").get(index).get("label").equals("_"))
             return true;

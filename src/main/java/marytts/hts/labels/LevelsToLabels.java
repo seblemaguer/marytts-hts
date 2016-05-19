@@ -12,34 +12,34 @@ import java.util.Hashtable;
  */
 public class LevelsToLabels
 {
-    private ArrayList<ArrayList<String>> matrice;
-    private ArrayList<Boolean> nss_mask;
-    private ArrayList<Integer> stressed_syl_indexes;
-    private Hashtable<String, ArrayList<Hashtable<String, String>>> levels;
+    protected ArrayList<ArrayList<String>> matrice;
+    protected ArrayList<Boolean> nss_mask;
+    protected ArrayList<Integer> stressed_syl_indexes;
+    protected Hashtable<String, ArrayList<Hashtable<String, String>>> levels;
 
-    private static final String UNDEF = "x";
+    protected static final String UNDEF = "x";
 
-    private String cur_syl_vowel;
-    private int cur_pho_index;
-    private int cur_syl_index;
-    private int cur_wrd_index;
-    private int cur_phr_index;
+    protected String cur_syl_vowel;
+    protected int cur_pho_index;
+    protected int cur_syl_index;
+    protected int cur_wrd_index;
+    protected int cur_phr_index;
 
-    private int pho_offset;
-    private int syl_wrd_offset;
-    private int syl_phr_offset;
-    private int wrd_offset;
-    private int phr_offset;
-    private int stress_prev;
-    private int stress_next;
-    private int cur_syl_size;
-    private int cur_wrd_size;
-    private int cur_phr_size_in_syls;
-    private int cur_phr_size_in_wrds;
+    protected int pho_offset;
+    protected int syl_wrd_offset;
+    protected int syl_phr_offset;
+    protected int wrd_offset;
+    protected int phr_offset;
+    protected int stress_prev;
+    protected int stress_next;
+    protected int cur_syl_size;
+    protected int cur_wrd_size;
+    protected int cur_phr_size_in_syls;
+    protected int cur_phr_size_in_wrds;
 
-    private Hashtable<String, String> sampa2arpabet;
-    private Hashtable<String, String> modifier;
-    private Hashtable<String, String> pos_converter;
+    protected Hashtable<String, String> alphabet_converter;
+    protected Hashtable<String, String> modifier;
+    protected Hashtable<String, String> pos_converter;
 
     /* ==========================================================================================
      * # Constructors
@@ -55,68 +55,68 @@ public class LevelsToLabels
     /* ==========================================================================================
      * # Conversion helpers
      * ========================================================================================== */
-    private void initPhConverter()
+    protected void initPhConverter()
     {
-        sampa2arpabet = new Hashtable<String, String>();
+        alphabet_converter = new Hashtable<String, String>();
 
         // Vowels
-        sampa2arpabet.put("A", "aa");
-        sampa2arpabet.put("AI", "ay");
-        sampa2arpabet.put("E", "eh");
-        sampa2arpabet.put("EI", "ey");
-        sampa2arpabet.put("I", "ih");
-        sampa2arpabet.put("O", "ao");
-        sampa2arpabet.put("OI", "oy");
-        sampa2arpabet.put("U", "uh");
-        sampa2arpabet.put("aU", "aw");
-        sampa2arpabet.put("i", "iy");
-        sampa2arpabet.put("u", "uw");
-        sampa2arpabet.put("@", "ax");
-        sampa2arpabet.put("@U", "ow");
-        sampa2arpabet.put("V", "ah");
-        sampa2arpabet.put("{", "ae");
+        alphabet_converter.put("A", "aa");
+        alphabet_converter.put("AI", "ay");
+        alphabet_converter.put("E", "eh");
+        alphabet_converter.put("EI", "ey");
+        alphabet_converter.put("I", "ih");
+        alphabet_converter.put("O", "ao");
+        alphabet_converter.put("OI", "oy");
+        alphabet_converter.put("U", "uh");
+        alphabet_converter.put("aU", "aw");
+        alphabet_converter.put("i", "iy");
+        alphabet_converter.put("u", "uw");
+        alphabet_converter.put("@", "ax");
+        alphabet_converter.put("@U", "ow");
+        alphabet_converter.put("V", "ah");
+        alphabet_converter.put("{", "ae");
 
-        sampa2arpabet.put("j", "y");
+        alphabet_converter.put("j", "y");
 
-        sampa2arpabet.put("D", "dh");
-        sampa2arpabet.put("N", "ng");
-        sampa2arpabet.put("S", "sh");
-        sampa2arpabet.put("T", "th");
-        sampa2arpabet.put("Z", "zh");
-        sampa2arpabet.put("b", "b");
-        sampa2arpabet.put("d", "d");
-        sampa2arpabet.put("dZ", "jh"); // FIXME: what it is ?
-        sampa2arpabet.put("f", "f");
-        sampa2arpabet.put("g", "g");
-        sampa2arpabet.put("h", "hh");
-        sampa2arpabet.put("k", "k");
-        sampa2arpabet.put("l", "l");
-        sampa2arpabet.put("m", "m");
-        sampa2arpabet.put("n", "n");
-        sampa2arpabet.put("p", "p");
-        sampa2arpabet.put("r", "r");
-        sampa2arpabet.put("r=", "r"); // FIXME: sure ?
-        sampa2arpabet.put("s", "s");
-        sampa2arpabet.put("t", "t");
-        sampa2arpabet.put("tS", "ch");
-        sampa2arpabet.put("v", "v");
-        sampa2arpabet.put("w", "w");
-        sampa2arpabet.put("z", "z");
+        alphabet_converter.put("D", "dh");
+        alphabet_converter.put("N", "ng");
+        alphabet_converter.put("S", "sh");
+        alphabet_converter.put("T", "th");
+        alphabet_converter.put("Z", "zh");
+        alphabet_converter.put("b", "b");
+        alphabet_converter.put("d", "d");
+        alphabet_converter.put("dZ", "jh"); // FIXME: what it is ?
+        alphabet_converter.put("f", "f");
+        alphabet_converter.put("g", "g");
+        alphabet_converter.put("h", "hh");
+        alphabet_converter.put("k", "k");
+        alphabet_converter.put("l", "l");
+        alphabet_converter.put("m", "m");
+        alphabet_converter.put("n", "n");
+        alphabet_converter.put("p", "p");
+        alphabet_converter.put("r", "r");
+        alphabet_converter.put("s", "s");
+        alphabet_converter.put("t", "t");
+        alphabet_converter.put("tS", "ch");
+        alphabet_converter.put("v", "v");
+        alphabet_converter.put("w", "w");
+        alphabet_converter.put("z", "z");
 
-        sampa2arpabet.put("_", "pau");
+        alphabet_converter.put("_", "pau");
 
-        sampa2arpabet.put("4", "dx"); // FIXME: ?
-        sampa2arpabet.put("?", "q"); // FIXME: ?
+        alphabet_converter.put("4", "dx"); // FIXME: ?
+        alphabet_converter.put("?", "q"); // FIXME: ?
     }
 
-    private void initModifier()
+    protected void initModifier()
     {
         modifier = new Hashtable<String, String>();
         modifier.put(":", "LONG");
         modifier.put("~", "NASAL");
+        modifier.put("=", "SYLLABICITY");
     }
 
-    private void initPOSConverter()
+    protected void initPOSConverter()
     {
         pos_converter = new Hashtable<String, String>();
         pos_converter.put("``", "STARTQUOTES");
@@ -128,8 +128,8 @@ public class LevelsToLabels
     protected String convertLabel(String label)
     {
         String final_label = label;
-        if (sampa2arpabet.containsKey(label))
-            final_label = sampa2arpabet.get(label);
+        if (alphabet_converter.containsKey(label))
+            final_label = alphabet_converter.get(label);
 
         // Dealing with nasalisation
         for (String key: modifier.keySet())
@@ -399,7 +399,7 @@ public class LevelsToLabels
         matrice.get(seg_idx).add(levels.get("utt").get(0).get("nb_phrases"));
     }
 
-    private boolean isNSS(int index)
+    protected boolean isNSS(int index)
     {
         if (levels.get("phoneme").get(index).get("label").equals("_"))
             return true;
