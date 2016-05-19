@@ -106,6 +106,7 @@ public class LevelsToLabels
         sampa2arpabet.put("_", "pau");
 
         sampa2arpabet.put("4", "dx"); // FIXME: ?
+        sampa2arpabet.put("?", "q"); // FIXME: ?
     }
 
     private void initModifier()
