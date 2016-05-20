@@ -38,7 +38,7 @@ test {
     useTestNG()
 }
 
-def cur_version = '0.2.2'
+def cur_version = '0.2.3'
 
 publishing {
     publications {

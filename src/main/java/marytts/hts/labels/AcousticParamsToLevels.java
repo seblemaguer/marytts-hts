@@ -30,55 +30,37 @@ public class AcousticParamsToLevels
         generateLevels(acoustParams.getDocument().getDocumentElement());
     }
 
-    private Hashtable<String, String> generatePhrase(Node p)
+    private Hashtable<String, String> generatePhrase(Element p)
     {
         Hashtable<String, String> phrase = new Hashtable<String, String>();
 
         int nb_wrds = 0;
         int nb_syls = 0;
 
-        // Child
-        NodeList nl = p.getChildNodes();
-        for (int i=0; i<nl.getLength(); i++)
+        // Dealing with words (ignoring MTU, ..)
+        NodeList wrd_nl = p.getElementsByTagName("t");
+        for (int wrd_idx=0; wrd_idx<wrd_nl.getLength(); wrd_idx++)
         {
-            try {
-                Element elt = (Element) nl.item(i);
-                if (elt.getTagName().equals("boundary")) {
-                    NamedNodeMap attr = elt.getAttributes();
-                    phrase.put("tobi", ((Attr) attr.getNamedItem("tone")).getValue());
-                }
-
-                else if ((nl.item(i) instanceof Element) &&
-                         (((Element) nl.item(i)).getTagName().equals("t"))) // FIXME: hardcoded
-                {
-                    NodeList syl = elt.getElementsByTagName("syllable");
-                    for (int s=0; s<syl.getLength(); s++)
-                    {
-                        nb_syls++;
-                    }
-                    nb_wrds++;
-                }
-
-                // FIXME: mtu here ?!
-                else if ((nl.item(i) instanceof Element) &&
-                         (((Element) nl.item(i)).getTagName().equals("mtu"))) // FIXME: hardcoded
-                {
-                    NodeList wrds = elt.getElementsByTagName("t");
-                    for (int w=0; w<wrds.getLength(); w++)
-                    {
-                        NodeList syl = ((Element) wrds.item(w)).getElementsByTagName("syllable");
-                        for (int s=0; s<syl.getLength(); s++)
-                        {
-                            nb_syls++;
-                        }
-
-                        nb_wrds++;
-                    }
-                }
-            }
-            catch (Exception ex) // FIXME: be more precise !
+            NodeList syl = ((Element) wrd_nl.item(wrd_idx)).getElementsByTagName("syllable");
+            for (int s=0; s<syl.getLength(); s++)
             {
+                nb_syls++;
             }
+
+            nb_wrds++;
+        }
+
+        NodeList bound_nl = p.getElementsByTagName("boundary");
+        if (bound_nl.getLength() > 2)
+        {
+            // logging the problem
+
+        }
+        for (int i=0; i<bound_nl.getLength(); i++)
+        {
+            Element elt = (Element) bound_nl.item(i);
+            NamedNodeMap attr = elt.getAttributes();
+            phrase.put("tobi", ((Attr) attr.getNamedItem("tone")).getValue());
         }
 
         phrase.put("size_in_syls", Integer.toString(nb_syls));
@@ -87,7 +69,7 @@ public class AcousticParamsToLevels
         return phrase;
     }
 
-    private Hashtable<String, String> generateWord(Node w)
+    private Hashtable<String, String> generateWord(Element w)
     {
         Hashtable<String, String> word = new Hashtable<String, String>();
         NamedNodeMap attr = w.getAttributes();
@@ -115,7 +97,7 @@ public class AcousticParamsToLevels
         return word;
     }
 
-    private Hashtable<String, String> generateSyllable(Node s)
+    private Hashtable<String, String> generateSyllable(Element s)
     {
         Hashtable<String, String> syl = new Hashtable<String, String>();
         NamedNodeMap attr = s.getAttributes();
@@ -149,7 +131,7 @@ public class AcousticParamsToLevels
         return syl;
     }
 
-    private Hashtable<String, String> generatePhoneme(Node p)
+    private Hashtable<String, String> generatePhoneme(Element p)
     {
         Hashtable<String, String> ph = new Hashtable<String, String>();
         NamedNodeMap attr = p.getAttributes();
@@ -157,18 +139,18 @@ public class AcousticParamsToLevels
         return ph;
     }
 
-    private void generateLevel(Node node)
+    private void generateLevel(Element node)
     {
-        if (((Element) node).getTagName().equals("ph"))
+        if (node.getTagName().equals("ph"))
         {
             ArrayList<Hashtable<String, String>> level = new ArrayList<Hashtable<String, String>>();
             levels.get("phoneme").add(generatePhoneme(node));
         }
-        else if (((Element) node).getTagName().equals("syllable")) // FIXME: syllable tag hardcoded
+        else if (node.getTagName().equals("syllable")) // FIXME: syllable tag hardcoded
         {
             levels.get("syllable").add(generateSyllable(node));
         }
-        else if (((Element) node).getTagName().equals("t")) // FIXME: word tag hardcoded
+        else if (node.getTagName().equals("t")) // FIXME: word tag hardcoded
         {
             NamedNodeMap attr = node.getAttributes();
             if (attr.getNamedItem("ph") != null) // FIXME: deal with double quotes
@@ -184,7 +166,7 @@ public class AcousticParamsToLevels
             }
 
         }
-        else if (((Element) node).getTagName().equals("phrase")) // FIXME: phrase tag hardcoded
+        else if (node.getTagName().equals("phrase")) // FIXME: phrase tag hardcoded
         {
             levels.get("phrase").add(generatePhrase(node));
         }
@@ -194,7 +176,7 @@ public class AcousticParamsToLevels
     {
         if (root instanceof Element)
         {
-            generateLevel(root);
+            generateLevel((Element) root);
 
             // Child
             NodeList nl = root.getChildNodes();
