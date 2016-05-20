@@ -51,14 +51,10 @@ public class AcousticParamsToLevels
                 else if ((nl.item(i) instanceof Element) &&
                          (((Element) nl.item(i)).getTagName().equals("t"))) // FIXME: hardcoded
                 {
-                    NodeList syl = elt.getChildNodes();
+                    NodeList syl = elt.getElementsByTagName("syllable");
                     for (int s=0; s<syl.getLength(); s++)
                     {
-                        if ((syl.item(s) instanceof Element) &&
-                            (((Element) syl.item(s)).getTagName().equals("syllable"))) // FIXME: hardcoded
-                        {
-                            nb_syls++;
-                        }
+                        nb_syls++;
                     }
                     nb_wrds++;
                 }
@@ -67,24 +63,16 @@ public class AcousticParamsToLevels
                 else if ((nl.item(i) instanceof Element) &&
                          (((Element) nl.item(i)).getTagName().equals("mtu"))) // FIXME: hardcoded
                 {
-                    NodeList wrds = elt.getChildNodes();
+                    NodeList wrds = elt.getElementsByTagName("t");
                     for (int w=0; w<wrds.getLength(); w++)
                     {
-                        if ((wrds.item(w) instanceof Element) &&
-                            (((Element) wrds.item(w)).getTagName().equals("t"))) // FIXME: hardcoded
+                        NodeList syl = ((Element) wrds.item(w)).getElementsByTagName("syllable");
+                        for (int s=0; s<syl.getLength(); s++)
                         {
-                            NodeList syl = ((Element) wrds.item(w)).getChildNodes();
-                            for (int s=0; s<syl.getLength(); s++)
-                            {
-                                if ((syl.item(s) instanceof Element) &&
-                                    (((Element) syl.item(s)).getTagName().equals("syllable"))) // FIXME: hardcoded
-                                {
-                                    nb_syls++;
-                                }
-                            }
-
-                            nb_wrds++;
+                            nb_syls++;
                         }
+
+                        nb_wrds++;
                     }
                 }
             }

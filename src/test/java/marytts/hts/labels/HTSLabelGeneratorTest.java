@@ -91,4 +91,21 @@ public class HTSLabelGeneratorTest
 
         Assert.assertEquals(generated_labels, original_labels);
     }
+
+
+
+	@Test
+	public void testRecursiveMTU() throws Exception {
+
+        Locale loc = Locale.GERMAN;
+        mary.setLocale(loc);
+		Assert.assertEquals(loc, mary.getLocale());
+
+		mary.setOutputType(HTSUtils.HTSLABEL.name());
+        String text = loadResourceIntoString("utt2_de.txt");
+        String generated_labels = mary.generateText(text);
+        String original_labels = loadResourceIntoString("utt2_de.lab");
+
+        Assert.assertEquals(generated_labels, original_labels);
+    }
 }
