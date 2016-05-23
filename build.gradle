@@ -62,6 +62,7 @@ bintray {
 
         publish = true
         publications = ['MyPublication']
+
         //Optional version descriptor
         version {
             name = cur_version

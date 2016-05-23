@@ -62,6 +62,10 @@ public class HTSLabelGeneratorTest
 		return buf.toString();
 	}
 
+    /**
+     * Check baseline for german
+     *
+     */
 	@Test
 	public void convertTextToPhonemesDE() throws Exception {
 
@@ -77,6 +81,10 @@ public class HTSLabelGeneratorTest
         Assert.assertEquals(generated_labels, original_labels);
     }
 
+    /**
+     * Check baseline for french
+     *
+     */
 	@Test
 	public void convertTextToPhonemesFR() throws Exception {
 
@@ -92,6 +100,10 @@ public class HTSLabelGeneratorTest
         Assert.assertEquals(generated_labels, original_labels);
     }
 
+    /**
+     * Check when there is a recursive MTU (ex: phrase -&gt; [mtu -&gt;]* terms)
+     *
+     */
 	@Test
 	public void testRecursiveMTU() throws Exception {
 
@@ -107,6 +119,10 @@ public class HTSLabelGeneratorTest
         Assert.assertEquals(generated_labels, original_labels);
     }
 
+    /**
+     * Check when there is embedded terms into a phrase (ex: phrase -&gt; phonology -&gt; [mtu -&gt;]* terms)
+     *
+     */
 	@Test
 	public void testEmbeddedTerms() throws Exception {
 
