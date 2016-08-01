@@ -20,14 +20,15 @@ public class FestivalLevelsToLabels extends LevelsToLabels
     public FestivalLevelsToLabels(Hashtable<String, ArrayList<Hashtable<String, String>>> levels)
     {
         super(levels);
+        alphabet_converter = FestivalLevelsToLabels.initPhConverter();
     }
 
     /* ==========================================================================================
      * # Conversion helpers
      * ========================================================================================== */
-    protected void initPhConverter()
+    public static Hashtable<String, String> initPhConverter()
     {
-        alphabet_converter = new Hashtable<String, String>();
+        Hashtable<String, String> alphabet_converter = new Hashtable<String, String>();
 
         // Vowels
         alphabet_converter.put("A", "aa");
@@ -75,8 +76,15 @@ public class FestivalLevelsToLabels extends LevelsToLabels
 
         alphabet_converter.put("_", "pau");
 
-        alphabet_converter.put("4", "dx"); // FIXME: ?
+        alphabet_converter.put("2", "eu");
+        alphabet_converter.put("4", "dx");
+        alphabet_converter.put("6", "er");
+        alphabet_converter.put("9", "oe");
+        alphabet_converter.put("?", "dt");
+
+        return alphabet_converter;
     }
+
     protected void initPOSConverter()
     {
         pos_converter = new Hashtable<String, String>();

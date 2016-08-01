@@ -23,6 +23,7 @@ def maryttsVersion = '5.2-SNAPSHOT'
 
 dependencies {
     compile localGroovy()
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.21'
     testCompile group: 'org.testng', name: 'testng', version: '6.8.13'
     compile group: 'de.dfki.mary', name: 'marytts-runtime', version: maryttsVersion
     testCompile group: 'de.dfki.mary', name: 'marytts-runtime', version: maryttsVersion
@@ -38,7 +39,7 @@ test {
     useTestNG()
 }
 
-def cur_version = '0.2.3'
+def cur_version = '0.2.4'
 
 publishing {
     publications {
@@ -60,13 +61,13 @@ bintray {
         licenses = ["GPL-3.0"]
         vcsUrl = 'https://github.com/seblemaguer/marytts-hts'
 
-        publish = true
-        publications = ['MyPublication']
+    publish = true
+    publications = ['MyPublication']
 
-        //Optional version descriptor
-        version {
-            name = cur_version
-            vcsTag = cur_version
-        }
+    //Optional version descriptor
+    version {
+        name = cur_version
+        vcsTag = cur_version
     }
+}
 }

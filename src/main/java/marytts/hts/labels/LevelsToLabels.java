@@ -2,6 +2,9 @@ package marytts.hts.labels;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Transform levels to HTS compatible labels
@@ -12,6 +15,7 @@ import java.util.Hashtable;
  */
 public class LevelsToLabels
 {
+    private final Logger logger = LoggerFactory.getLogger(LevelsToLabels.class);
     protected ArrayList<ArrayList<String>> matrice;
     protected ArrayList<Boolean> nss_mask;
     protected ArrayList<Integer> stressed_syl_indexes;
@@ -46,18 +50,18 @@ public class LevelsToLabels
      * ========================================================================================== */
     public LevelsToLabels(Hashtable<String, ArrayList<Hashtable<String, String>>> levels)
     {
-        initPhConverter();
+        alphabet_converter = LevelsToLabels.initPhConverter();
+        modifier = LevelsToLabels.initModifier();
         initPOSConverter();
-        initModifier();
         this.levels = levels;
     }
 
     /* ==========================================================================================
      * # Conversion helpers
      * ========================================================================================== */
-    protected void initPhConverter()
+    public static Hashtable<String, String> initPhConverter()
     {
-        alphabet_converter = new Hashtable<String, String>();
+        Hashtable<String, String> alphabet_converter = new Hashtable<String, String>();
 
         // Vowels
         alphabet_converter.put("A", "aa");
@@ -72,6 +76,7 @@ public class LevelsToLabels
         alphabet_converter.put("i", "iy");
         alphabet_converter.put("u", "uw");
         alphabet_converter.put("@", "ax");
+        alphabet_converter.put("U", "oo");
         alphabet_converter.put("@U", "ow");
         alphabet_converter.put("V", "ah");
         alphabet_converter.put("{", "ae");
@@ -104,16 +109,24 @@ public class LevelsToLabels
 
         alphabet_converter.put("_", "pau");
 
-        alphabet_converter.put("4", "dx"); // FIXME: ?
-        alphabet_converter.put("?", "q"); // FIXME: ?
+        alphabet_converter.put("2", "eu");
+        alphabet_converter.put("4", "dx");
+        alphabet_converter.put("6", "er");
+        alphabet_converter.put("9", "oe");
+        alphabet_converter.put("?", "dt");
+
+        return alphabet_converter;
     }
 
-    protected void initModifier()
+    public static Hashtable<String, String> initModifier()
     {
-        modifier = new Hashtable<String, String>();
+        Hashtable<String, String> modifier = new Hashtable<String, String>();
+
         modifier.put(":", "LONG");
         modifier.put("~", "NASAL");
         modifier.put("=", "SYLLABICITY");
+
+        return modifier;
     }
 
     protected void initPOSConverter()
@@ -122,14 +135,27 @@ public class LevelsToLabels
         pos_converter.put("``", "STARTQUOTES");
         pos_converter.put("''", "ENDQUOTES");
         pos_converter.put("'", "QUOTE");
+        pos_converter.put("$,", "COMMA");
+        pos_converter.put("$(", "BRACKETS");
+        pos_converter.put("$.", "DOT");
     }
 
     // FIXME: sampa to arpabet
     protected String convertLabel(String label)
     {
         String final_label = label;
-        if (alphabet_converter.containsKey(label))
-            final_label = alphabet_converter.get(label);
+
+        // Strip the modifier just to convert the label
+        String tmp_label = label;
+        for (String key: modifier.keySet())
+        {
+            tmp_label = tmp_label.replaceAll(key, "");
+        }
+
+        if (alphabet_converter.containsKey(tmp_label))
+            final_label = final_label.replaceAll(Pattern.quote(tmp_label), alphabet_converter.get(tmp_label));
+        else
+            logger.debug("<{}> is not in the map", tmp_label);
 
         // Dealing with nasalisation
         for (String key: modifier.keySet())
@@ -137,6 +163,7 @@ public class LevelsToLabels
             final_label = final_label.replaceAll(key, modifier.get(key));
         }
 
+        logger.debug("converting <{}> to <{}>", label, final_label);
         return final_label;
     }
 
