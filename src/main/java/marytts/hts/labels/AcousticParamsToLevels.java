@@ -136,6 +136,11 @@ public class AcousticParamsToLevels
         Hashtable<String, String> ph = new Hashtable<String, String>();
         NamedNodeMap attr = p.getAttributes();
         ph.put("label", ((Attr) attr.getNamedItem("p")).getValue());
+        if (attr.getNamedItem("d") != null)
+        {
+            ph.put("duration", ((Attr) attr.getNamedItem("d")).getValue());
+            levels.get("phoneme").get(0).put("duration", "400"); // FIXME: really patchy
+        }
         return ph;
     }
 
@@ -162,6 +167,10 @@ public class AcousticParamsToLevels
                 // FIXME: which kind of pause !
                 Hashtable<String, String> nss = new Hashtable<String, String>();
                 nss.put("label", "_");
+                // FIXME: really really patch!
+                if (levels.get("phoneme").get(0).containsKey("duration"))
+                    nss.put("duration", "400");
+
                 levels.get("phoneme").add(nss);
             }
 
@@ -204,6 +213,7 @@ public class AcousticParamsToLevels
         // FIXME: Adding artificially a start pause
         Hashtable<String, String> nss = new Hashtable<String, String>();
         nss.put("label", "_");
+        // Check if the first phoneme have a duration
         levels.get("phoneme").add(nss);
 
         // Now generate levels information

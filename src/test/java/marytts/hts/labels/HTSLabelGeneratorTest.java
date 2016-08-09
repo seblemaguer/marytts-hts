@@ -3,6 +3,7 @@ package marytts.hts.labels;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.io.BufferedReader;
+import java.io.StringReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,6 +28,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import org.xml.sax.InputSource ;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -72,7 +76,7 @@ public class HTSLabelGeneratorTest
         Locale loc = Locale.GERMAN;
         mary.setLocale(loc);
 		Assert.assertEquals(loc, mary.getLocale());
-
+        mary.setInputType("TEXT");
 		mary.setOutputType(HTSUtils.HTSLABEL.name());
         String text = loadResourceIntoString("utt1_de.txt");
         String generated_labels = mary.generateText(text);
@@ -91,7 +95,7 @@ public class HTSLabelGeneratorTest
         Locale loc = Locale.FRENCH;
         mary.setLocale(loc);
 		Assert.assertEquals(loc, mary.getLocale());
-
+        mary.setInputType("TEXT");
 		mary.setOutputType(HTSUtils.HTSLABEL.name());
         String text = loadResourceIntoString("utt1_fr.txt");
         String generated_labels = mary.generateText(text);
@@ -110,7 +114,7 @@ public class HTSLabelGeneratorTest
         Locale loc = Locale.GERMAN;
         mary.setLocale(loc);
 		Assert.assertEquals(loc, mary.getLocale());
-
+        mary.setInputType("TEXT");
 		mary.setOutputType(HTSUtils.HTSLABEL.name());
         String text = loadResourceIntoString("utt2_de.txt");
         String generated_labels = mary.generateText(text);
@@ -120,7 +124,8 @@ public class HTSLabelGeneratorTest
     }
 
     /**
-     * Check when there is embedded terms into a phrase (ex: phrase -&gt; phonology -&gt; [mtu -&gt;]* terms)
+     * Check when there is embedded terms into a phrase (ex: phrase -&gt; phonology -&gt; [mtu
+     * -&gt;]* terms)
      *
      */
 	@Test
@@ -129,11 +134,36 @@ public class HTSLabelGeneratorTest
         Locale loc = Locale.GERMAN;
         mary.setLocale(loc);
 		Assert.assertEquals(loc, mary.getLocale());
-
+        mary.setInputType("TEXT");
 		mary.setOutputType(HTSUtils.HTSLABEL.name());
         String text = loadResourceIntoString("utt3_de.txt");
         String generated_labels = mary.generateText(text);
         String original_labels = loadResourceIntoString("utt3_de.lab");
+
+        Assert.assertEquals(generated_labels, original_labels);
+    }
+
+
+    /**
+     * Check when there is embedded terms into a phrase (ex: phrase -&gt; phonology -&gt; [mtu
+     * -&gt;]* terms)
+     *
+     */
+	@Test
+	public void testDuration() throws Exception {
+
+        Locale loc = Locale.GERMAN;
+        mary.setLocale(loc);
+		Assert.assertEquals(loc, mary.getLocale());
+        mary.setInputType("ACOUSTPARAMS");
+        mary.setOutputType(HTSUtils.HTSLABEL.name());
+        String text = loadResourceIntoString("utt4_de.xml");
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        InputSource is = new InputSource();
+        is.setCharacterStream(new StringReader(text));
+        Document doc = db.parse(is);
+        String generated_labels = mary.generateText(doc);
+        String original_labels = loadResourceIntoString("utt4_de.lab");
 
         Assert.assertEquals(generated_labels, original_labels);
     }

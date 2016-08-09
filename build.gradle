@@ -12,14 +12,17 @@ plugins {
 
 
 repositories {
+    jcenter()
     mavenLocal()
-    mavenCentral()
+    maven {
+        url 'https://oss.jfrog.org/artifactory/repo'
+    }
     maven {
         url 'https://oss.jfrog.org/artifactory/repo'
     }
 }
 
-def maryttsVersion = '5.2-SNAPSHOT'
+def maryttsVersion = '5.2'
 
 dependencies {
     compile localGroovy()
@@ -61,13 +64,13 @@ bintray {
         licenses = ["GPL-3.0"]
         vcsUrl = 'https://github.com/seblemaguer/marytts-hts'
 
-    publish = true
-    publications = ['MyPublication']
+        publish = true
+        publications = ['MyPublication']
 
-    //Optional version descriptor
-    version {
-        name = cur_version
-        vcsTag = cur_version
+        //Optional version descriptor
+        version {
+            name = cur_version
+            vcsTag = cur_version
+        }
     }
-}
 }

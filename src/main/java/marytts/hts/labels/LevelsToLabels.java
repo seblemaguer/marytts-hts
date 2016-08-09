@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 public class LevelsToLabels
 {
     private final Logger logger = LoggerFactory.getLogger(LevelsToLabels.class);
+    protected boolean has_duration;
     protected ArrayList<ArrayList<String>> matrice;
     protected ArrayList<Boolean> nss_mask;
     protected ArrayList<Integer> stressed_syl_indexes;
@@ -52,6 +53,7 @@ public class LevelsToLabels
     {
         alphabet_converter = LevelsToLabels.initPhConverter();
         modifier = LevelsToLabels.initModifier();
+        has_duration = false;
         initPOSConverter();
         this.levels = levels;
     }
@@ -198,6 +200,11 @@ public class LevelsToLabels
         assert matrice.get(seg_idx) != null;
 
         // Get label list (FIXME: could be more time efficient)
+        if (levels.get("phoneme").get(cur_pho_index).containsKey("duration"))
+        {
+            has_duration = true;
+            matrice.get(seg_idx).add(levels.get("phoneme").get(cur_pho_index).get("duration"));
+        }
 
         // Previous phonemes
         if (cur_pho_index > 1)
@@ -440,7 +447,12 @@ public class LevelsToLabels
     public ArrayList<String> format()
     {
         assert matrice != null;
-        String format ="%s^%s-%s+%s=%s@%s_%s"; // Phoneme format
+        String format = "";
+        if (has_duration)
+            format = "%d\t%d\t"; // segment if duration
+
+        // Phoneme format
+        format = format + "%s^%s-%s+%s=%s@%s_%s";
         // Syllable format
         format += "/A:%s_%s_%s/B:%s-%s-%s@%s-%s&%s-%s#%s-%s$%s-%s!%s-%s;%s-%s|%s/C:%s+%s+%s";
         // Word format
@@ -451,57 +463,116 @@ public class LevelsToLabels
         format+= "/J:%s+%s-%s";
 
         ArrayList<String> labels = new ArrayList<String>();
+        int start = 0;
+        int end = 0;
         for (int i=0; i<matrice.size(); i++)
         {
             ArrayList<String> line = matrice.get(i);
 
             String cur_lab = "";
 
-            if (nss_mask.get(i))
+            if (has_duration)
             {
-                cur_lab = String.format(format,
-                                        // Phoneme
-                                        line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
-                                        UNDEF, UNDEF,
-                                        // Syllable
-                                        UNDEF, UNDEF, UNDEF,
-                                        UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF,
-                                        UNDEF, UNDEF, UNDEF,
-                                        // Word
-                                        UNDEF, UNDEF,
-                                        UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF,
-                                        UNDEF, UNDEF,
-                                        // Phrase
-                                        UNDEF, UNDEF,
-                                        UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF,
-                                        UNDEF, UNDEF,
-                                        // Utterance
-                                        UNDEF, UNDEF, UNDEF);
+                System.out.println("duration == " + line);
+                String dur = line.remove(0);
+                end = start + Integer.parseInt(dur) * 10000;
+                if (nss_mask.get(i))
+                {
+                    cur_lab = String.format(format,
+                                            start, end,
+                                            // Phoneme
+                                            line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
+                                            UNDEF, UNDEF,
+                                            // Syllable
+                                            UNDEF, UNDEF, UNDEF,
+                                            UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF,
+                                            UNDEF, UNDEF, UNDEF,
+                                            // Word
+                                            UNDEF, UNDEF,
+                                            UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF,
+                                            UNDEF, UNDEF,
+                                            // Phrase
+                                            UNDEF, UNDEF,
+                                            UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF,
+                                            UNDEF, UNDEF,
+                                            // Utterance
+                                            UNDEF, UNDEF, UNDEF);
+                }
+                else
+                {
+                    cur_lab = String.format(format,
+                                            start, end,
+                                            // Phoneme
+                                            line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0),
+                                            // Syllable
+                                            line.remove(0), line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0), line.remove(0),
+                                            // Word
+                                            line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0),
+                                            // Phrase
+                                            line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0),
+                                            // Utterance
+                                            line.remove(0), line.remove(0), line.remove(0));
+                }
+
+                start = end;
             }
             else
             {
-                cur_lab = String.format(format,
-                                        // Phoneme
-                                        line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
-                                        line.remove(0), line.remove(0),
-                                        // Syllable
-                                        line.remove(0), line.remove(0), line.remove(0),
-                                        line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
-                                        line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
-                                        line.remove(0), line.remove(0), line.remove(0),
-                                        // Word
-                                        line.remove(0), line.remove(0),
-                                        line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
-                                        line.remove(0), line.remove(0),
-                                        // Phrase
-                                        line.remove(0), line.remove(0),
-                                        line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
-                                        line.remove(0), line.remove(0),
-                                        // Utterance
-                                        line.remove(0), line.remove(0), line.remove(0));
+                if (nss_mask.get(i))
+                {
+                    cur_lab = String.format(format,
+                                            // Phoneme
+                                            line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
+                                            UNDEF, UNDEF,
+                                            // Syllable
+                                            UNDEF, UNDEF, UNDEF,
+                                            UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF,
+                                            UNDEF, UNDEF, UNDEF,
+                                            // Word
+                                            UNDEF, UNDEF,
+                                            UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF,
+                                            UNDEF, UNDEF,
+                                            // Phrase
+                                            UNDEF, UNDEF,
+                                            UNDEF, UNDEF, UNDEF, UNDEF, UNDEF, UNDEF,
+                                            UNDEF, UNDEF,
+                                            // Utterance
+                                            UNDEF, UNDEF, UNDEF);
+                }
+                else
+                {
+                    cur_lab = String.format(format,
+                                            // Phoneme
+                                            line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0),
+                                            // Syllable
+                                            line.remove(0), line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0), line.remove(0),
+                                            // Word
+                                            line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0),
+                                            // Phrase
+                                            line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0), line.remove(0), line.remove(0), line.remove(0),
+                                            line.remove(0), line.remove(0),
+                                            // Utterance
+                                            line.remove(0), line.remove(0), line.remove(0));
+                }
             }
             labels.add(cur_lab);
         }
+
 
         return labels;
     }
