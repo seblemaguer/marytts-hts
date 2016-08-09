@@ -473,7 +473,6 @@ public class LevelsToLabels
 
             if (has_duration)
             {
-                System.out.println("duration == " + line);
                 String dur = line.remove(0);
                 end = start + Integer.parseInt(dur) * 10000;
                 if (nss_mask.get(i))
