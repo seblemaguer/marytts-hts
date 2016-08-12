@@ -14,11 +14,11 @@ t^l-ih+C=ax@2_1/A:1_x_4/B:0-x-2@2-2&4-12#x-x$x-x!1-2;x-x|x/C:0+x+3/D:ART_1/E:ADJ
 l^ih-C+ax=n@1_3/A:0_x_2/B:0-x-3@3-1&5-11#x-x$x-x!2-1;x-x|x/C:1+x+3/D:ART_1/E:ADJA+3@3+6&x+x#x+x/F:NN_6/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
 ih^C-ax+n=n@2_2/A:0_x_2/B:0-x-3@3-1&5-11#x-x$x-x!2-1;x-x|x/C:1+x+3/D:ART_1/E:ADJA+3@3+6&x+x#x+x/F:NN_6/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
 C^ax-n+n=aLONG@3_1/A:0_x_2/B:0-x-3@3-1&5-11#x-x$x-x!2-1;x-x|x/C:1+x+3/D:ART_1/E:ADJA+3@3+6&x+x#x+x/F:NN_6/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
-ax^n-n+aLONG=x@1_3/A:0_x_3/B:1-x-3@1-6&6-10#x-x$x-x!3-6;x-x|x/C:0+x+3/D:ADJA_3/E:NN+6@4+5&x+x#x+x/F:NE_1/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
-n^n-aLONG+x=R@2_2/A:0_x_3/B:1-x-3@1-6&6-10#x-x$x-x!3-6;x-x|x/C:0+x+3/D:ADJA_3/E:NN+6@4+5&x+x#x+x/F:NE_1/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
-n^aLONG-x+R=ih@3_1/A:0_x_3/B:1-x-3@1-6&6-10#x-x$x-x!3-6;x-x|x/C:0+x+3/D:ADJA_3/E:NN+6@4+5&x+x#x+x/F:NE_1/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
-aLONG^x-R+ih=C@1_3/A:1_x_3/B:0-x-3@2-5&7-9#x-x$x-x!1-5;x-x|x/C:0+x+3/D:ADJA_3/E:NN+6@4+5&x+x#x+x/F:NE_1/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
-x^R-ih+C=t@2_2/A:1_x_3/B:0-x-3@2-5&7-9#x-x$x-x!1-5;x-x|x/C:0+x+3/D:ADJA_3/E:NN+6@4+5&x+x#x+x/F:NE_1/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
+ax^n-n+aLONG=xx@1_3/A:0_x_3/B:1-x-3@1-6&6-10#x-x$x-x!3-6;x-x|x/C:0+x+3/D:ADJA_3/E:NN+6@4+5&x+x#x+x/F:NE_1/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
+n^n-aLONG+xx=R@2_2/A:0_x_3/B:1-x-3@1-6&6-10#x-x$x-x!3-6;x-x|x/C:0+x+3/D:ADJA_3/E:NN+6@4+5&x+x#x+x/F:NE_1/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
+n^aLONG-xx+R=ih@3_1/A:0_x_3/B:1-x-3@1-6&6-10#x-x$x-x!3-6;x-x|x/C:0+x+3/D:ADJA_3/E:NN+6@4+5&x+x#x+x/F:NE_1/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
+aLONG^xx-R+ih=C@1_3/A:1_x_3/B:0-x-3@2-5&7-9#x-x$x-x!1-5;x-x|x/C:0+x+3/D:ADJA_3/E:NN+6@4+5&x+x#x+x/F:NE_1/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
+xx^R-ih+C=t@2_2/A:1_x_3/B:0-x-3@2-5&7-9#x-x$x-x!1-5;x-x|x/C:0+x+3/D:ADJA_3/E:NN+6@4+5&x+x#x+x/F:NE_1/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
 R^ih-C+t=ax@3_1/A:1_x_3/B:0-x-3@2-5&7-9#x-x$x-x!1-5;x-x|x/C:0+x+3/D:ADJA_3/E:NN+6@4+5&x+x#x+x/F:NE_1/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
 ih^C-t+ax=n@1_3/A:0_x_3/B:0-x-3@3-4&8-8#x-x$x-x!2-4;x-x|x/C:0+x+2/D:ADJA_3/E:NN+6@4+5&x+x#x+x/F:NE_1/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1
 C^t-ax+n=dt@2_2/A:0_x_3/B:0-x-3@3-4&8-8#x-x$x-x!2-4;x-x|x/C:0+x+2/D:ADJA_3/E:NN+6@4+5&x+x#x+x/F:NE_1/G:x_x/H:15=8^1=1|L-%/I:x_x/J:15+8-1

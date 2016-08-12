@@ -107,6 +107,7 @@ public class LevelsToLabels
         alphabet_converter.put("tS", "ch");
         alphabet_converter.put("v", "v");
         alphabet_converter.put("w", "w");
+        alphabet_converter.put("x", "xx"); // Double x in order to not get mistaken with undefined value
         alphabet_converter.put("z", "z");
 
         alphabet_converter.put("_", "pau");
